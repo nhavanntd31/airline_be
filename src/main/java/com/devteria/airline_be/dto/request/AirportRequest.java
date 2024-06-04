@@ -1,17 +1,15 @@
 package com.devteria.airline_be.dto.request;
 
-import java.util.Set;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleRequest {
+public class AirportRequest {
     String name;
-    String description;
-    Set<String> permissions;
+    String address;
+    Boolean international;
 }

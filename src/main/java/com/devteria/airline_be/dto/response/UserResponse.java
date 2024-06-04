@@ -1,21 +1,26 @@
 package com.devteria.airline_be.dto.response;
 
-import java.time.LocalDate;
-import java.util.Set;
-
+import com.devteria.airline_be.entity.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
     String id;
-    String username;
-    String firstName;
-    String lastName;
-    LocalDate dob;
-    Set<RoleResponse> roles;
+    String name;
+    String email;
+    String avatarUrl;
+    User.Role role;
+    User.Status status;
+    Boolean isVerified;
+    LocalDateTime lastLogin;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 }

@@ -9,7 +9,7 @@ import com.devteria.airline_be.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    boolean existsByUsername(String username);
-
-    Optional<User> findByUsername(String username);
+    boolean existsByName(String Name);
+    boolean existsByEmail(String email);
+    Optional<User> findByName(String Name);
 }

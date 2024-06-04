@@ -1,6 +1,7 @@
 package com.devteria.airline_be.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -14,8 +15,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "tickets")
-public class Ticket {
+@Table(name = "bookings")
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false, length = 36)
@@ -23,27 +24,18 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
-    Flight flights;
+    Flight seat;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    Ticket.Type type;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
 
-    @Column(nullable = false)
-    int price;
-
-    @Column(nullable = false)
-    String description;
+    @Column()
+    String reservationCode;
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     LocalDateTime createdAt;
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    LocalDateTime updateAt;
-
-    public enum Type {
-        CLASSIC,
-        BUSINESS
-    }
-
+    LocalDateTime updatedAt;
 }
