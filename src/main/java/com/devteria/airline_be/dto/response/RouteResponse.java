@@ -8,7 +8,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionResponse {
-    String name;
-    String description;
+public class RouteResponse {
+    String id;
+    String originId;
+    String destinationId;
+    Boolean isRoundTrip;
 }

@@ -1,69 +1,53 @@
-// package com.devteria.airline_be.controller;
+package com.devteria.airline_be.controller;
 
-// import java.util.List;
+import com.devteria.airline_be.dto.request.ApiResponse;
+import com.devteria.airline_be.dto.request.UserRequest;
+import com.devteria.airline_be.dto.response.UserResponse;
+import com.devteria.airline_be.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// import jakarta.validation.Valid;
+import java.util.List;
 
-// import org.springframework.web.bind.annotation.*;
+@RestController
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
+public class UserController {
+    private final UserService userService;
 
-// import com.devteria.airline_be.dto.request.ApiResponse;
-// import com.devteria.airline_be.dto.request.UserCreationRequest;
-// import com.devteria.airline_be.dto.request.UserUpdateRequest;
-// import com.devteria.airline_be.dto.response.UserResponse;
-// import com.devteria.airline_be.service.UserService;
+    @PostMapping
+    ApiResponse<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
+        UserResponse userResponse = userService.createUser(userRequest);
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(userRequest))
+                .build();
+    }
 
-// import lombok.AccessLevel;
-// import lombok.RequiredArgsConstructor;
-// import lombok.experimental.FieldDefaults;
-// import lombok.extern.slf4j.Slf4j;
+    @GetMapping("/{id}")
+   ApiResponse<UserResponse> getUserById(@PathVariable String id) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUserById(id))
+                .build();
+    }
 
-// @RestController
-// @RequestMapping("/users")
-// @RequiredArgsConstructor
-// @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-// @Slf4j
-// @CrossOrigin(origins = "http://localhost:3000")
-// public class UserController {
-//     UserService userService;
+    @GetMapping
+    ApiResponse<List<UserResponse>> getAllUsers() {
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getAllUsers())
+                .build();
+    }
 
-//     @PostMapping
-//     ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
-//         return ApiResponse.<UserResponse>builder()
-//                 .result(userService.createUser(request))
-//                 .build();
-//     }
+    @PutMapping("/{id}")
+    ApiResponse<UserResponse> updateUser(@PathVariable String id, @Valid @RequestBody UserRequest userRequest) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUserById(id))
+                .build();
+    }
 
-//     @GetMapping
-//     ApiResponse<List<UserResponse>> getUsers() {
-//         return ApiResponse.<List<UserResponse>>builder()
-//                 .result(userService.getUsers())
-//                 .build();
-//     }
+    @DeleteMapping("/{id}")
+    ApiResponse<Void> deleteUser(@PathVariable String id) {
 
-//     @GetMapping("/{userId}")
-//     ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId) {
-//         return ApiResponse.<UserResponse>builder()
-//                 .result(userService.getUser(userId))
-//                 .build();
-//     }
-
-//     @GetMapping("/my-info")
-//     ApiResponse<UserResponse> getMyInfo() {
-//         return ApiResponse.<UserResponse>builder()
-//                 .result(userService.getMyInfo())
-//                 .build();
-//     }
-
-//     @DeleteMapping("/{userId}")
-//     ApiResponse<String> deleteUser(@PathVariable String userId) {
-//         userService.deleteUser(userId);
-//         return ApiResponse.<String>builder().result("User has been deleted").build();
-//     }
-
-//     @PutMapping("/{userId}")
-//     ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
-//         return ApiResponse.<UserResponse>builder()
-//                 .result(userService.updateUser(userId, request))
-//                 .build();
-//     }
-// }
+    }
+}
