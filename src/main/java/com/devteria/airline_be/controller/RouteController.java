@@ -3,51 +3,58 @@ import com.devteria.airline_be.dto.request.ApiResponse;
 import com.devteria.airline_be.dto.request.RouteRequest;
 import com.devteria.airline_be.dto.response.RouteResponse;
 import com.devteria.airline_be.service.RouteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
-@RequestMapping("/api/routes")
+@RequestMapping("/routes")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
+@Slf4j
 public class RouteController {
-    @Autowired
-    private RouteService routeService;
+
+    RouteService routeService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<RouteResponse>>> getAllRoutes() {
-        List<RouteResponse> routes = routeService.getAllRoutes();
-        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Routes fetched successfully", routes));
+    public ApiResponse<List<RouteResponse>> getAllRoutes() {
+        return ApiResponse.<List<RouteResponse>>builder()
+                .result(routeService.getAllRoutes())
+                .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<RouteResponse>> getRouteById(@PathVariable String id) {
-        Optional<RouteResponse> route = routeService.getRouteById(id);
-        return route.map(value -> ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Route fetched successfully", value)))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ApiResponse<>(HttpStatus.NOT_FOUND.value(), "Route not found", null)));
+    public ApiResponse<RouteResponse> getRouteById(@PathVariable String id) {
+        return ApiResponse.<RouteResponse>builder()
+                .result(routeService.getRouteById(id))
+                .build();
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<RouteResponse>> createRoute(@RequestBody RouteRequest routeRequestDto) {
-        RouteResponse createdRoute = routeService.createRoute(routeRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(HttpStatus.CREATED.value(), "Route created successfully", createdRoute));
+
+    public ApiResponse<RouteResponse> createRoute(@RequestBody RouteRequest routeRequest) {
+        RouteResponse createdRoute = routeService.createRoute(routeRequest);
+        return ApiResponse.<RouteResponse>builder()
+                .result(createdRoute)
+                .build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<RouteResponse>> updateRoute(@PathVariable String id, @RequestBody RouteRequest routeRequestDto) {
-        RouteResponse updatedRoute = routeService.updateRoute(id, routeRequestDto);
-        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Route updated successfully", updatedRoute));
+    public ApiResponse<RouteResponse> updateRoute(@PathVariable String id, @RequestBody RouteRequest routeRequest) {
+        RouteResponse updatedRoute = routeService.updateRoute(id, routeRequest);
+        return ApiResponse.<RouteResponse>builder()
+                .result(updatedRoute)
+                .build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteRoute(@PathVariable String id) {
-        routeService.deleteRoute(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(new ApiResponse<>(HttpStatus.NO_CONTENT.value(), "Route deleted successfully", null));
-    }
+//    @DeleteMapping("/{id}")
+//    public String deleteRoute(@PathVariable String id) {
+//        routeService.deleteRoute(id);
+//        return "Delete successfully";
+//    }
 }

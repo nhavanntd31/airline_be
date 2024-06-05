@@ -1,7 +1,6 @@
 package com.devteria.airline_be.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -24,7 +23,7 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
-    Flight flight;
+    Flight seat;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

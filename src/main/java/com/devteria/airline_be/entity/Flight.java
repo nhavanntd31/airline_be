@@ -1,7 +1,9 @@
 package com.devteria.airline_be.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -23,10 +25,12 @@ public class Flight {
 
     @ManyToOne
     @JoinColumn(name = "route_id", nullable = false)
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Route route;
 
     @ManyToOne
     @JoinColumn(name = "aircraft_id", nullable = false)
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Aircraft aircraft;
 
     @Column(columnDefinition = "TIMESTAMP")
@@ -40,4 +44,16 @@ public class Flight {
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "flights")
+    Set<Ticket> flightTickets;
+
+    @OneToMany(mappedBy = "seat")
+    Set<Booking> flightBookings;
+
+    @OneToMany(mappedBy = "seat")
+    Set<Payment> flightPayments;
+
+    @OneToMany(mappedBy = "seat")
+    Set<Baggage> flightBaggages;
 }

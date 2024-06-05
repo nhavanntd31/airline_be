@@ -9,20 +9,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface AirportMapper {
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "originRoutes", ignore = true)
-    @Mapping(target = "destinationRoutes", ignore = true)
     Airport toAirport(AirportRequest request);
-
     AirportResponse toAirportResponse(Airport airport);
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "originRoutes", ignore = true)
-    @Mapping(target = "destinationRoutes", ignore = true)
     void updateAirport(@MappingTarget Airport airport, AirportRequest request);
 }

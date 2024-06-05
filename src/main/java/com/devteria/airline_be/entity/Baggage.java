@@ -26,6 +26,10 @@ public class Baggage {
     @JoinColumn(name = "flight_id", nullable = false)
     Flight seat;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
+
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     LocalDateTime createdAt;
 

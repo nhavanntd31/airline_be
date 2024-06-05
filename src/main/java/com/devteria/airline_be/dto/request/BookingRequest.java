@@ -1,16 +1,17 @@
 package com.devteria.airline_be.dto.request;
 
-import com.devteria.airline_be.entity.Airport;
+import com.devteria.airline_be.entity.Flight;
+import com.devteria.airline_be.entity.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RouteRequest{
-    Airport origin;
-    Airport destination;
-    Boolean isRoundTrip;
+public class BookingRequest {
+    Flight seat;
+    User user;
+    String reservationCode;
 }

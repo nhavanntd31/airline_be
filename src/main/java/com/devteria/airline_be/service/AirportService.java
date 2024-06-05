@@ -7,6 +7,9 @@ import com.devteria.airline_be.exception.AppException;
 import com.devteria.airline_be.exception.ErrorCode;
 import com.devteria.airline_be.mapper.AirportMapper;
 import com.devteria.airline_be.repository.AirportRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +19,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AirportService {
-    @Autowired
+
     private AirportRepository airportRepository;
 
-    @Autowired
-    private AirportMapper airportMapper;
+    AirportMapper airportMapper;
 
     public List<AirportResponse> getAllAirports() {
         return airportRepository.findAll().stream()
@@ -29,8 +33,9 @@ public class AirportService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<AirportResponse> getAirportById(String id) {
-        return airportRepository.findById(id).map(airportMapper::toAirportResponse);
+    public AirportResponse getAirportById(String id) {
+        return airportMapper.toAirportResponse(airportRepository.findById(id).orElseThrow(
+                ()-> new AppException(ErrorCode.AIRCRAFT_NOT_EXISTED)));
     }
 
     public AirportResponse createAirport(AirportRequest airportRequest) {
@@ -42,7 +47,7 @@ public class AirportService {
     }
 
     public AirportResponse updateAirport(String id, AirportRequest airportRequest) {
-        Airport airport = airportRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+        Airport airport = airportRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.AIRPORT_NOT_EXISTED));
         airportMapper.updateAirport(airport, airportRequest);
         airport.setUpdatedAt(LocalDateTime.now());
 
@@ -51,7 +56,7 @@ public class AirportService {
 
     public void deleteAirport(String id) {
         if (!airportRepository.existsById(id)) {
-            throw new AppException(ErrorCode.INVALID_KEY);
+            throw new AppException(ErrorCode.AIRPORT_NOT_EXISTED);
         }
         airportRepository.deleteById(id);
     }

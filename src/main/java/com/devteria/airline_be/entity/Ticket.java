@@ -2,6 +2,7 @@ package com.devteria.airline_be.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -23,6 +24,7 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Flight flights;
 
     @Enumerated(EnumType.STRING)
@@ -31,9 +33,6 @@ public class Ticket {
 
     @Column(nullable = false)
     int price;
-
-    @Column(nullable = false)
-    String description;
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     LocalDateTime createdAt;

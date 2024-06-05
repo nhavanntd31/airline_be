@@ -19,6 +19,7 @@ import lombok.experimental.FieldDefaults;
 public class Airport {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false, length = 36)
     String id;
 
     @Column(nullable = false)
