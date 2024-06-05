@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Aplication.yaml ###
+/Users/trinhtrongtinh/Downloads/airline_backend/airline_be/src/main/resources/application.yaml

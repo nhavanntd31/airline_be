@@ -1,6 +1,7 @@
 package com.devteria.airline_be.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -32,9 +33,10 @@ public class User {
     @Column(columnDefinition = "TEXT")
     String avatarUrl;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    Role role;
+    Role role = Role.USER;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -59,8 +61,18 @@ public class User {
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "user")
+    Set<Baggage> userBaggages;
+
+    @OneToMany(mappedBy = "user")
+    Set<Payment> userPayments;
+
+    @OneToMany(mappedBy = "user")
+    Set<Booking> userBookings;
+
+    @Builder.Default
     @Column(nullable = false)
-    Boolean isDeleted;
+    Boolean isDeleted = Boolean.FALSE;
 
     public enum Role {
         ADMIN,

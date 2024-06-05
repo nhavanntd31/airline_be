@@ -1,16 +1,16 @@
 package com.devteria.airline_be.dto.response;
 
-import com.devteria.airline_be.entity.Airport;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RouteResponse {
-    Airport origin;
-    Airport destination;
-    Boolean isRoundTrip;
+public class AircraftResponse {
+    String id;
+    String type;
+    String number;
+    Integer seats;
 }

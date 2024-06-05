@@ -7,4 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface AirportRepository extends JpaRepository<Airport, String> {
+    Optional<Airport> findById(String id);
 }

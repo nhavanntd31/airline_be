@@ -5,17 +5,20 @@ import com.devteria.airline_be.dto.request.UserRequest;
 import com.devteria.airline_be.dto.response.UserResponse;
 import com.devteria.airline_be.service.UserService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    private final UserService userService;
+    UserService userService;
 
     @PostMapping
     ApiResponse<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
@@ -47,7 +50,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    ApiResponse<Void> deleteUser(@PathVariable String id) {
-
+    String deleteUser(@PathVariable String id) {
+        userService.deleteUser(id);
+        return "Delete successfully!";
     }
 }

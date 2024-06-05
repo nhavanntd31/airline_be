@@ -4,51 +4,51 @@ import com.devteria.airline_be.dto.request.AirportRequest;
 import com.devteria.airline_be.dto.request.ApiResponse;
 import com.devteria.airline_be.dto.response.AirportResponse;
 import com.devteria.airline_be.service.AirportService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("airports")
+@RequestMapping("/airports")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class AirportController {
-    @Autowired
-    private AirportService airportService;
+
+    AirportService airportService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<AirportResponse>>> getAllAirports() {
-        List<AirportResponse> airports = airportService.getAllAirports();
-        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Airports fetched successfully", airports));
+    public ApiResponse<List<AirportResponse>> getAllAirports() {
+        return ApiResponse.<List<AirportResponse>>builder()
+                .result(airportService.getAllAirports())
+                .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<AirportResponse>> getAirportById(@PathVariable String id) {
-        Optional<AirportResponse> airport = airportService.getAirportById(id);
-        return airport.map(value -> ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Airport fetched successfully", value)))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ApiResponse<>(HttpStatus.NOT_FOUND.value(), "Airport not found", null)));
+    public ApiResponse<AirportResponse> getAirportById(@PathVariable String id) {
+        return ApiResponse.<AirportResponse>builder()
+                .result(airportService.getAirportById(id))
+                .build();
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<AirportResponse>> createAirport(@RequestBody AirportRequest airportRequest) {
-        AirportResponse createdAirport = airportService.createAirport(airportRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(HttpStatus.CREATED.value(), "Airport created successfully", createdAirport));
+    public ApiResponse<AirportResponse> createAirport(@RequestBody AirportRequest request) {
+        return ApiResponse.<AirportResponse>builder()
+                .result(airportService.createAirport(request))
+                .build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<AirportResponse>> updateAirport(@PathVariable String id, @RequestBody AirportRequest airportRequest) {
-        AirportResponse updatedAirport = airportService.updateAirport(id, airportRequest);
-        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Airport updated successfully", updatedAirport));
+    public ApiResponse<AirportResponse> updateAirport(@PathVariable String id, @RequestBody AirportRequest request) {
+        return ApiResponse.<AirportResponse>builder()
+                .result(airportService.updateAirport(id,request))
+                .build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteAirport(@PathVariable String id) {
-        airportService.deleteAirport(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(new ApiResponse<>(HttpStatus.NO_CONTENT.value(), "Airport deleted successfully", null));
-    }
+//    @DeleteMapping("/{id}")
+//    public String deleteAirport(@PathVariable String id) {
+//        airportService.deleteAirport(id);
+//        return "Delete successfully";
+//    }
 }

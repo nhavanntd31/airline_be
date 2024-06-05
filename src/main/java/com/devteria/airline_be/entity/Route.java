@@ -3,6 +3,7 @@ package com.devteria.airline_be.entity;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -24,10 +25,12 @@ public class Route {
 
     @ManyToOne
     @JoinColumn(name = "origin_id", nullable = false)
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Airport origin;
 
     @ManyToOne
     @JoinColumn(name = "destination_id", nullable = false)
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Airport destination;
 
     // @ManyToOne

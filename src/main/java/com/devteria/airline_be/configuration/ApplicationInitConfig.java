@@ -33,6 +33,8 @@ public class ApplicationInitConfig {
                         .name("admin")
                         .email("trinhtrongtinh1122@gmail.com")
                         .password(passwordEncoder.encode("admin"))
+                        .status(User.Status.ACTIVE)
+                        .isVerified(true)
                         .build();
 
                 userRepository.save(user);

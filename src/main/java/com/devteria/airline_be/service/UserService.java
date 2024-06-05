@@ -7,7 +7,9 @@ import com.devteria.airline_be.exception.AppException;
 import com.devteria.airline_be.exception.ErrorCode;
 import com.devteria.airline_be.mapper.UserMapper;
 import com.devteria.airline_be.repository.UserRepository;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +17,10 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService {
-    private final UserRepository userRepository;
-    private final UserMapper userMapper = UserMapper.INSTANCE;
+    UserRepository userRepository;
+    UserMapper userMapper = UserMapper.INSTANCE;
 
     public UserResponse createUser(UserRequest userRequest) {
         if (userRepository.existsByEmail(userRequest.getEmail())) {
