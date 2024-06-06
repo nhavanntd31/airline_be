@@ -1,8 +1,6 @@
 package com.devteria.airline_be.controller;
 
-import com.devteria.airline_be.dto.request.ApiResponse;
-import com.devteria.airline_be.dto.request.AuthenticationRequest;
-import com.devteria.airline_be.dto.request.IntrospectRequest;
+import com.devteria.airline_be.dto.request.*;
 import com.devteria.airline_be.dto.response.AuthenticationResponse;
 import com.devteria.airline_be.dto.response.IntrospectResponse;
 import com.devteria.airline_be.service.AuthenticationService;
@@ -41,5 +39,18 @@ public class AuthenticationController {
         return ApiResponse.<IntrospectResponse>builder()
                 .result(result)
                 .build();
+    }
+
+    @PostMapping("/refresh")
+    ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshRequest request)
+            throws ParseException, JOSEException {
+        var result = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
+    }
+
+    @PostMapping("/logout")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        return ApiResponse.<Void>builder().build();
     }
 }

@@ -4,6 +4,7 @@ import com.devteria.airline_be.dto.request.TicketRequest;
 import com.devteria.airline_be.dto.response.TicketResponse;
 import com.devteria.airline_be.entity.Ticket;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")

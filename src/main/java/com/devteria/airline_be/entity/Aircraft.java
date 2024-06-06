@@ -3,6 +3,7 @@ package com.devteria.airline_be.entity;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -38,5 +39,6 @@ public class Aircraft {
     LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "aircraft")
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Set<Flight> flights;
 }

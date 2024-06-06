@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FlightResponse {
+    String id;
     Route route;
     Aircraft aircraft;
     LocalDateTime startTime;

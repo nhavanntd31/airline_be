@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,10 +15,12 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
     String id;
-    String name;
+    String username;
+    String firstname;
+    String lastname;
     String email;
     String avatarUrl;
-    User.Role role;
+    Set<RoleResponse> roles;
     User.Status status;
     Boolean isVerified;
     LocalDateTime lastLogin;

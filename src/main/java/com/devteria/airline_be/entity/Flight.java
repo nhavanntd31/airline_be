@@ -46,14 +46,7 @@ public class Flight {
     LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "flights")
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Set<Ticket> flightTickets;
 
-    @OneToMany(mappedBy = "seat")
-    Set<Booking> flightBookings;
-
-    @OneToMany(mappedBy = "seat")
-    Set<Payment> flightPayments;
-
-    @OneToMany(mappedBy = "seat")
-    Set<Baggage> flightBaggages;
 }

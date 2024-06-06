@@ -47,5 +47,6 @@ public class Route {
     Boolean isRoundTrip;
 
     @OneToMany(mappedBy = "route")
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Set<Flight> flights;
 }

@@ -24,7 +24,7 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
-    Flight seat;
+    Ticket ticket;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
