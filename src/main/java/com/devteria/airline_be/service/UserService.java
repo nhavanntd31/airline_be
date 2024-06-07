@@ -19,7 +19,11 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.mvc.condition.RequestConditionHolder;
 
 
 import java.util.HashSet;
@@ -73,10 +77,10 @@ public class UserService {
     }
 
     public UserResponse getMyInfo(){
-        var context = SecurityContextHolder.getContext();
-        String name = context.getAuthentication().getName();
-        User user = userRepository.findByUsername(name).orElseThrow(
+        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findById(id).orElseThrow(
                 ()-> new AppException(ErrorCode.USER_NOT_EXISTED));
+
         return userMapper.toUserResponse(user);
     }
 

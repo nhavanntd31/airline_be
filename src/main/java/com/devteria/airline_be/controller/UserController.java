@@ -47,7 +47,6 @@ public class UserController {
 
     @GetMapping
     ApiResponse<List<UserResponse>> getAllUsers() {
-        log.info("ACCESSSSSSSS!");
         return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.getAllUsers())
                 .build();
@@ -55,7 +54,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     ApiResponse<UserResponse> updateUser(@PathVariable String id, @Valid @RequestBody UserUpdateRequest userRequest) {
-        System.out.println("sdfgshjdbvjhdv");
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateUser(id,userRequest))
                 .build();
