@@ -1,6 +1,7 @@
 package com.devteria.airline_be.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -24,12 +25,11 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
-    @JsonIgnore // Ignore serialization of this field to prevent circular reference
     Flight flights;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    Ticket.Type type;
+    Type type;
 
     @Column(nullable = false)
     int price;
@@ -44,5 +44,13 @@ public class Ticket {
         CLASSIC,
         BUSINESS
     }
+
+    @OneToMany(mappedBy = "ticket")
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
+    Set<Booking> ticketBookings;
+
+    @OneToMany(mappedBy = "ticket")
+    @JsonIgnore // Ignore serialization of this field to prevent circular reference
+    Set<Payment> ticketPayments;
 
 }

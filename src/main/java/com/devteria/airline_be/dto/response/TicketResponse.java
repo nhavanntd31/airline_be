@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class TicketResponse {
     String id;
     Flight flight;
-    Ticket.Type type;
+    String type;
     int price;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;

@@ -4,12 +4,14 @@ import com.devteria.airline_be.dto.request.BookingRequest;
 import com.devteria.airline_be.dto.response.BookingResponse;
 import com.devteria.airline_be.entity.Booking;
 import com.devteria.airline_be.entity.Flight;
+import com.devteria.airline_be.entity.Ticket;
 import com.devteria.airline_be.entity.User;
 import com.devteria.airline_be.exception.AppException;
 import com.devteria.airline_be.exception.ErrorCode;
 import com.devteria.airline_be.mapper.BookingMapper;
 import com.devteria.airline_be.repository.BookingRepository;
 import com.devteria.airline_be.repository.FlightRepository;
+import com.devteria.airline_be.repository.TicketRepository;
 import com.devteria.airline_be.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class BookingService {
     FlightRepository flightRepository;
     UserRepository userRepository;
     BookingMapper bookingMapper;
+    private final TicketRepository ticketRepository;
 
     public List<BookingResponse> getAllBookings() {
         return bookingRepository.findAll()
@@ -44,12 +47,12 @@ public class BookingService {
     }
 
     public BookingResponse createBooking(BookingRequest bookingRequest) {
-        Flight flight = flightRepository.findById(bookingRequest.getSeat().getId())
+        Ticket ticket = ticketRepository.findById(bookingRequest.getTicket().getId())
                 .orElseThrow(() -> new AppException(ErrorCode.FLIGHT_NOT_EXISTED));
         User user = userRepository.findById(bookingRequest.getUser().getId())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         Booking booking = bookingMapper.toBooking(bookingRequest);
-        booking.setSeat(flight);
+        booking.setTicket(ticket);
         booking.setUser(user);
         booking.setCreatedAt(LocalDateTime.now());
         booking.setUpdatedAt(LocalDateTime.now());
@@ -58,6 +61,10 @@ public class BookingService {
     }
 
     public BookingResponse updateBooking(String id, BookingRequest bookingRequest) {
+        Ticket ticket = ticketRepository.findById(bookingRequest.getTicket().getId())
+                .orElseThrow(() -> new AppException(ErrorCode.FLIGHT_NOT_EXISTED));
+        User user = userRepository.findById(bookingRequest.getUser().getId())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_EXISTED));
         bookingMapper.updateBooking(existingBooking, bookingRequest);
@@ -68,7 +75,7 @@ public class BookingService {
 
     public void deleteBooking(String id) {
         Booking existingBooking = bookingRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+                .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_EXISTED));
         bookingRepository.delete(existingBooking);
     }
 }

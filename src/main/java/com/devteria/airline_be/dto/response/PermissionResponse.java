@@ -1,4 +1,4 @@
-package com.devteria.airline_be.dto.request;
+package com.devteria.airline_be.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,8 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationRequest {
-    String id;
-    String username;
-    String password;
+public class PermissionResponse {
+    String name;
+    String description;
 }

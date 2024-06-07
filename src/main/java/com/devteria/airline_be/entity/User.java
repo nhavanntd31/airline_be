@@ -22,7 +22,13 @@ public class User {
     String id;
 
     @Column(nullable = false)
-    String name;
+    String username;
+
+    @Column(nullable = false)
+    String firstname;
+
+    @Column(nullable = false)
+    String lastname;
 
     @Column(nullable = false)
     String email;
@@ -33,10 +39,10 @@ public class User {
     @Column(columnDefinition = "TEXT")
     String avatarUrl;
 
-    @Builder.Default
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    Role role = Role.USER;
+
+    @ManyToMany
+    Set<Role> roles;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -74,10 +80,6 @@ public class User {
     @Column(nullable = false)
     Boolean isDeleted = Boolean.FALSE;
 
-    public enum Role {
-        ADMIN,
-        USER
-    }
 
     public enum Status {
         DRAFT,

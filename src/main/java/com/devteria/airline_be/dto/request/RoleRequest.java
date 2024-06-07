@@ -1,5 +1,7 @@
 package com.devteria.airline_be.dto.request;
 
+import java.util.Set;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationRequest {
-    String id;
-    String username;
-    String password;
+public class RoleRequest {
+    String name;
+    String description;
+    Set<String> permissions;
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,22 +41,26 @@ public class TicketService {
                 ()-> new AppException(ErrorCode.TICKET_NOT_EXISTED)));
     }
 
-    public List<TicketResponse> createTicketsForFlight(Flight fli) {
-        Flight flight = flightRepository.findById(fli.getId())
-                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+    public List<TicketResponse> createTicketsForFlight(TicketRequest ticketRequest) {
+        Flight flight = flightRepository.findById(ticketRequest.getFlight().getId())
+                .orElseThrow(() -> new AppException(ErrorCode.FLIGHT_NOT_EXISTED));
 
-        List<Ticket> tickets = IntStream.range(0, 50)
-                .mapToObj(i -> {
-                    Ticket.Type type = i < 20 ? Ticket.Type.CLASSIC : Ticket.Type.BUSINESS;
-                    int price = type == Ticket.Type.CLASSIC ? 100 : 200;
-                    return Ticket.builder()
+        int seats = flight.getAircraft().getSeats();
+        int a = (seats + 20) / 2;
+        int b = a - 20;
+        if(ticketRequest.getType().name() == Ticket.Type.CLASSIC.name()){
+            seats = a;
+        } else seats = b;
+
+
+        List<Ticket> tickets = IntStream.range(0, seats)
+                .mapToObj( i -> Ticket.builder()
                             .flights(flight)
-                            .type(type)
-                            .price(price)
+                            .type(ticketRequest.getType())
+                            .price(ticketRequest.getPrice())
                             .createdAt(LocalDateTime.now())
                             .updateAt(LocalDateTime.now())
-                            .build();
-                })
+                            .build())
                 .collect(Collectors.toList());
 
         ticketRepository.saveAll(tickets);
@@ -64,6 +69,7 @@ public class TicketService {
                 .map(ticketMapper::toTicketResponse)
                 .collect(Collectors.toList());
     }
+
 
     public TicketResponse updateTicket(String id, TicketRequest ticketRequest) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.TICKET_NOT_EXISTED));

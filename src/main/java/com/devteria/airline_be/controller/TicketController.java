@@ -38,7 +38,7 @@ public class TicketController {
 
     @PostMapping
     public ApiResponse<List<TicketResponse>> createTicket(@RequestBody TicketRequest ticketRequest) {
-        List<TicketResponse> createdTicket = ticketService.createTicketsForFlight(ticketRequest.getFlight());
+        List<TicketResponse> createdTicket = ticketService.createTicketsForFlight(ticketRequest);
         return ApiResponse.<List<TicketResponse>>builder()
                 .result(createdTicket)
                 .build();

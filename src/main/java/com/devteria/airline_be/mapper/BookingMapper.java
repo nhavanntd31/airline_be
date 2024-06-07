@@ -12,8 +12,8 @@ public interface BookingMapper {
 
     Booking toBooking(BookingRequest bookingRequest);
 
-    @Mapping(source = "seat.aircraft.seats", target = "seat")
-    @Mapping(source = "user.name", target = "user")
+    @Mapping(source = "ticket.id", target = "seat")
+    @Mapping(source = "user.username", target = "user")
     @Mapping(source = "user.id", target = "user_id")
     BookingResponse toBookingResponse(Booking booking);
 
